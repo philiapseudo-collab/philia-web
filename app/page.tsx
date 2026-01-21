@@ -1,13 +1,14 @@
 import {
-  MessageCircle,
   CheckCircle2,
   Smartphone,
   Zap,
   ShieldCheck,
+  MessageCircle,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ChatSimulator from "@/components/ChatSimulator";
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
 const WHATSAPP_URL =
   "https://wa.me/254708115809?text=I%20am%20interested%20in%20a%20Philia%20Sales%20Agent";
@@ -196,16 +197,9 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Mobile Sticky CTA */}
-      <Link
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="md:hidden fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-green-500 shadow-xl flex items-center justify-center text-white transition-transform hover:scale-110"
-        aria-label="Chat with us on WhatsApp"
-      >
-        <MessageCircle className="h-7 w-7" />
-      </Link>
+      {/* Mobile Sticky CTA - Shows after scrolling past hero */}
+      <FloatingWhatsAppButton />
     </main>
   );
 }
+
