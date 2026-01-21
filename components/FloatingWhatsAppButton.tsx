@@ -5,7 +5,7 @@ import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 
 const WHATSAPP_URL =
-  "https://wa.me/254708115809?text=I%20am%20interested%20in%20a%20Philia%20Sales%20Agent";
+  "https://wa.me/254708116809?text=I%20am%20interested%20in%20a%20Philia%20Sales%20Agent";
 
 export default function FloatingWhatsAppButton() {
   const [isVisible, setIsVisible] = useState(false);
