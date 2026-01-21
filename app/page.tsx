@@ -32,16 +32,16 @@ export default function Home() {
         <div className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-8 md:flex-row md:items-center md:gap-12">
           {/* Text Content */}
           <div className="flex flex-1 flex-col items-center gap-6 text-center md:items-start md:text-left">
-            <h1 className="animate-fade-up opacity-0 text-3xl font-bold leading-tight text-philia-purple md:text-4xl lg:text-5xl">
+            <h1 className="animate-fade-up text-3xl font-bold leading-tight text-philia-purple md:text-4xl lg:text-5xl">
               Automate Your Sales on WhatsApp, Instagram & TikTok.
             </h1>
-            <p className="animate-fade-up opacity-0 text-lg leading-relaxed text-gray-700 md:text-xl lg:text-2xl [animation-delay:0.2s]">
+            <p className="animate-fade-up text-lg leading-relaxed text-gray-700 md:text-xl lg:text-2xl [animation-delay:0.2s]">
               Deploy custom AI Sales Agents that engage customers, sync inventory
               across platforms, and process M-Pesa payments instantly—24/7.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex animate-fade-up opacity-0 flex-col gap-4 sm:flex-row [animation-delay:0.4s]">
+            <div className="flex animate-fade-up flex-col gap-4 sm:flex-row [animation-delay:0.4s]">
               {/* WhatsApp Us Button - Solid Purple */}
               <Link
                 href={WHATSAPP_URL}

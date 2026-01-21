@@ -26,7 +26,7 @@ const config: Config = {
         },
       },
       animation: {
-        "fade-up": "fade-up 0.6s ease-out forwards",
+        "fade-up": "fade-up 0.6s ease-out both",
       },
     },
   },
