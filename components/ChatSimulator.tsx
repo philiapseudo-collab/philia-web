@@ -16,6 +16,7 @@ import {
   ImageIcon,
   Heart,
   Send,
+  ArrowUp,
 } from "lucide-react";
 
 type Platform = "whatsapp" | "instagram" | "tiktok";
@@ -42,9 +43,15 @@ interface MpesaDetails {
   business: string;
 }
 
-// Avatar URL
-const BUSINESS_AVATAR_URL =
-  "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=100&auto=format&fit=crop";
+// Unique Brand Avatars
+const WHATSAPP_AVATAR_URL =
+  "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=100&auto=format&fit=crop"; // Hardware/Construction
+
+const INSTAGRAM_AVATAR_URL =
+  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=100&auto=format&fit=crop"; // Sneaker/Fashion
+
+const TIKTOK_AVATAR_URL =
+  "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=100&auto=format&fit=crop"; // Tech/Gadget
 
 // Instagram Product Image URL
 const INSTAGRAM_PRODUCT_IMAGE_URL =
@@ -60,7 +67,7 @@ const scenarios: Scenario[] = [
     id: "whatsapp",
     name: "WhatsApp",
     businessName: "Jenga Hardware",
-    avatar: BUSINESS_AVATAR_URL,
+    avatar: WHATSAPP_AVATAR_URL,
     messages: [
       {
         id: "w1",
@@ -111,7 +118,7 @@ const scenarios: Scenario[] = [
     id: "instagram",
     name: "Instagram",
     businessName: "Nairobi Kicks",
-    avatar: BUSINESS_AVATAR_URL,
+    avatar: INSTAGRAM_AVATAR_URL,
     messages: [
       {
         id: "i1",
@@ -162,7 +169,7 @@ const scenarios: Scenario[] = [
     id: "tiktok",
     name: "TikTok",
     businessName: "TechTrend Gadgets",
-    avatar: BUSINESS_AVATAR_URL,
+    avatar: TIKTOK_AVATAR_URL,
     messages: [
       {
         id: "t1",
@@ -175,15 +182,30 @@ const scenarios: Scenario[] = [
         id: "t2",
         sender: "bot",
         type: "text",
-        content: "Hey! The SmartWatch is KES 3,500. It tracks HR and Sleep.",
+        content: "KES 3,500. Reply with your number to order.",
         delay: 1000,
       },
       {
         id: "t3",
+        sender: "user",
+        type: "text",
+        content: "0722000000",
+        delay: 2500, // 1.5s reading pause
+      },
+      {
+        id: "t4",
         sender: "bot",
         type: "text",
-        content: "Here is the checkout link.",
-        delay: 2800,
+        content: "Sending M-Pesa request...",
+        delay: 3500,
+        triggerMpesa: true,
+      },
+      {
+        id: "t5",
+        sender: "bot",
+        type: "text",
+        content: "Order placed! 🚚 Shipping now.",
+        delay: 7000, // After overlay
       },
     ],
   },
@@ -308,7 +330,7 @@ function FakeInputBar({ platform }: { platform: Platform }) {
         <span className="text-gray-500 text-sm">Add comment...</span>
       </div>
       <div className="bg-gradient-to-r from-cyan-500 to-pink-500 rounded-full p-2">
-        <Send className="h-4 w-4 text-white" />
+        <ArrowUp className="h-4 w-4 text-white" />
       </div>
     </div>
   );
@@ -399,8 +421,8 @@ function ChatBubble({
             className="object-cover"
             sizes="192px"
           />
-          {/* Price Badge (Bottom-left) */}
-          <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs font-semibold px-3 py-1 rounded-full">
+          {/* Price Badge (Bottom-left with Glassmorphism) */}
+          <div className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full">
             KES 4,500
           </div>
         </div>
@@ -540,8 +562,8 @@ function PlatformTabs({
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             className={`flex items-center gap-2 px-4 py-3 rounded-lg transition-colors ${isActive
-                ? getActiveClasses(tab.id)
-                : "text-gray-500 hover:text-gray-900"
+              ? getActiveClasses(tab.id)
+              : "text-gray-500 hover:text-gray-900"
               }`}
             aria-label={`Switch to ${tab.label} demo`}
           >
@@ -592,9 +614,17 @@ export default function ChatSimulator() {
           // Trigger M-Pesa overlay if flagged
           if (message.triggerMpesa) {
             const amount =
-              activeTab === "whatsapp" ? "KES 7,500" : "KES 4,500";
+              activeTab === "whatsapp"
+                ? "KES 7,500"
+                : activeTab === "instagram"
+                  ? "KES 4,500"
+                  : "KES 3,500";
             const business =
-              activeTab === "whatsapp" ? "JENGA HARDWARE" : "NAIROBI KICKS";
+              activeTab === "whatsapp"
+                ? "JENGA HARDWARE"
+                : activeTab === "instagram"
+                  ? "NAIROBI KICKS"
+                  : "TECHTREND GADGETS";
             setMpesaDetails({ amount, business });
             setShowMpesaModal(true);
 
