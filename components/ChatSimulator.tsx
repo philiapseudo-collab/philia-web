@@ -587,6 +587,7 @@ export default function ChatSimulator() {
     business: "",
   });
   const [isInView, setIsInView] = useState(false);
+  const [restartKey, setRestartKey] = useState(0); // Trigger to restart the loop
 
   // Refs
   const containerRef = useRef<HTMLDivElement>(null);
@@ -629,6 +630,11 @@ export default function ChatSimulator() {
       observer.disconnect();
     };
   }, []);
+
+  // Reset restartKey when tab changes (clean restart)
+  useEffect(() => {
+    setRestartKey(0);
+  }, [activeTab]);
 
   // Main animation loop: Only runs when in view
   useEffect(() => {
@@ -706,7 +712,8 @@ export default function ChatSimulator() {
     const loopTimeout = setTimeout(() => {
       if (isInViewRef.current) {
         resetSimulator();
-        // The useEffect will re-run and start the loop again
+        // Trigger restart by incrementing restartKey (causes useEffect to re-run)
+        setRestartKey((prev) => prev + 1);
       }
     }, totalScriptDuration);
     timeouts.push(loopTimeout);
@@ -714,7 +721,7 @@ export default function ChatSimulator() {
     return () => {
       timeouts.forEach(clearTimeout);
     };
-  }, [activeTab, currentScenario, isInView, totalScriptDuration]);
+  }, [activeTab, currentScenario, isInView, totalScriptDuration, restartKey]);
 
   // Typing indicator visibility
   const showTyping = isTyping;
