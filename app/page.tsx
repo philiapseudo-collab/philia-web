@@ -18,14 +18,70 @@ const DASHBOARD_IMAGE_URL =
 export default function Home() {
   return (
     <main className="min-h-screen">
+      {/* Fixed Navbar */}
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-6xl">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            {/* Custom P Logo SVG */}
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-8 w-8"
+            >
+              {/* First rounded rectangle (vertical stem of P) */}
+              <rect
+                x="6"
+                y="6"
+                width="6"
+                height="20"
+                rx="3"
+                fill="currentColor"
+                className="text-indigo-700"
+              />
+              {/* Second rounded rectangle (loop of P) */}
+              <path
+                d="M12 6C12 6 12 6 12 6C12 6 20 6 20 6C23.314 6 26 8.686 26 12C26 15.314 23.314 18 20 18L12 18L12 6Z"
+                fill="currentColor"
+                className="text-indigo-700"
+                opacity="0.9"
+              />
+            </svg>
+
+            {/* Brand Name */}
+            <span className="font-bold text-xl tracking-tight text-gray-900">
+              Philia
+            </span>
+          </div>
+
+          {/* WhatsApp CTA */}
+          <Link
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-philia-purple text-philia-purple font-semibold text-sm transition-colors hover:bg-philia-purple hover:text-white focus:outline-none focus:ring-2 focus:ring-philia-purple focus:ring-offset-2"
+          >
+            <MessageCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">WhatsApp Us</span>
+          </Link>
+        </div>
+      </nav>
+
       {/* Hero Section */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center px-4 py-16 md:flex-row md:px-8 md:py-24">
-        {/* Radial Gradient Background - Purple glow at top fading to white */}
+      <section className="relative flex min-h-screen flex-col items-center justify-center px-4 py-16 md:flex-row md:px-8 md:py-24 pt-32">
+        {/* Enhanced Background with Gradient and Dot Pattern */}
         <div
-          className="absolute inset-0 bg-white"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white via-slate-50 to-indigo-50/30"
           style={{
-            backgroundImage:
-              "radial-gradient(ellipse at top, rgba(76, 29, 149, 0.1) 0%, rgba(255, 255, 255, 0.5) 50%, #ffffff 100%)",
+            backgroundImage: `
+              radial-gradient(circle, rgba(99, 102, 241, 0.05) 1px, transparent 1px),
+              radial-gradient(ellipse at top, white 0%, rgb(248, 250, 252) 50%, rgba(238, 242, 255, 0.3) 100%)
+            `,
+            backgroundSize: '20px 20px, 100% 100%',
+            backgroundPosition: '0 0, 0 0',
           }}
         />
 
@@ -33,7 +89,12 @@ export default function Home() {
         <div className="relative z-10 flex w-full max-w-6xl flex-col items-center gap-8 md:flex-row md:items-center md:gap-12">
           {/* Text Content */}
           <div className="flex flex-1 flex-col items-center gap-6 text-center md:items-start md:text-left">
-            <h1 className="animate-fade-up text-3xl font-bold leading-tight text-philia-purple md:text-4xl lg:text-5xl">
+            {/* Status Pill */}
+            <div className="animate-fade-up inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-100 text-purple-700 text-sm font-semibold">
+              🚀 Now Live in Kenya
+            </div>
+
+            <h1 className="animate-fade-up text-3xl font-bold leading-tight text-philia-purple md:text-4xl lg:text-5xl [animation-delay:0.1s]">
               Automate Your Sales on WhatsApp, Instagram & TikTok.
             </h1>
             <p className="animate-fade-up text-lg leading-relaxed text-gray-700 md:text-xl lg:text-2xl [animation-delay:0.2s]">
