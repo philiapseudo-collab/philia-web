@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
@@ -586,75 +586,144 @@ export default function ChatSimulator() {
     amount: "",
     business: "",
   });
+  const [isInView, setIsInView] = useState(false);
+
+  // Refs
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInViewRef = useRef(false); // Track current isInView to avoid stale closures
 
   const currentScenario = scenarios.find((s) => s.id === activeTab)!;
 
-  useEffect(() => {
-    // Reset when tab changes
+  // Calculate total script duration (max delay + 5s pause buffer)
+  const totalScriptDuration =
+    Math.max(...currentScenario.messages.map((m) => m.delay)) + 5000;
+
+  // Reset function - clears all state
+  const resetSimulator = () => {
     setDisplayedMessages([]);
     setIsTyping(false);
-    setShowMpesaModal(false);
+    setShowMpesaModal(false); // Force close M-Pesa modal
+    setMpesaDetails({ amount: "", business: "" });
+  };
+
+  // IntersectionObserver: Detect when component is in viewport
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        const inView = entry.isIntersecting;
+        isInViewRef.current = inView; // Update ref immediately
+        setIsInView(inView);
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of component is visible
+        rootMargin: "50px", // Start slightly before entering viewport
+      }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Main animation loop: Only runs when in view
+  useEffect(() => {
+    // If out of view, reset and stop all timers
+    if (!isInView) {
+      resetSimulator();
+      return;
+    }
+
+    // Reset when starting (tab change or entering view)
+    resetSimulator();
 
     const timeouts: NodeJS.Timeout[] = [];
 
+    // Schedule all messages
     currentScenario.messages.forEach((message) => {
       if (message.sender === "bot") {
         // Show typing indicator 400ms before bot message
         const typingStartDelay = message.delay - 400;
-        const typingTimeout = setTimeout(() => {
-          setIsTyping(true);
-        }, typingStartDelay);
-        timeouts.push(typingTimeout);
+        if (typingStartDelay >= 0) {
+          const typingTimeout = setTimeout(() => {
+            if (isInViewRef.current) {
+              setIsTyping(true);
+            }
+          }, typingStartDelay);
+          timeouts.push(typingTimeout);
+        }
 
         // Hide typing and show bot message at the specified delay
         const messageTimeout = setTimeout(() => {
-          setIsTyping(false);
-          setDisplayedMessages((prev) => [...prev, message]);
+          if (isInViewRef.current) {
+            setIsTyping(false);
+            setDisplayedMessages((prev) => [...prev, message]);
 
-          // Trigger M-Pesa overlay if flagged
-          if (message.triggerMpesa) {
-            const amount =
-              activeTab === "whatsapp"
-                ? "KES 7,500"
-                : activeTab === "instagram"
-                  ? "KES 4,500"
-                  : "KES 3,500";
-            const business =
-              activeTab === "whatsapp"
-                ? "JENGA HARDWARE"
-                : activeTab === "instagram"
-                  ? "NAIROBI KICKS"
-                  : "TECHTREND GADGETS";
-            setMpesaDetails({ amount, business });
-            setShowMpesaModal(true);
+            // Trigger M-Pesa overlay if flagged
+            if (message.triggerMpesa) {
+              const amount =
+                activeTab === "whatsapp"
+                  ? "KES 7,500"
+                  : activeTab === "instagram"
+                    ? "KES 4,500"
+                    : "KES 3,500";
+              const business =
+                activeTab === "whatsapp"
+                  ? "JENGA HARDWARE"
+                  : activeTab === "instagram"
+                    ? "NAIROBI KICKS"
+                    : "TECHTREND GADGETS";
+              setMpesaDetails({ amount, business });
+              setShowMpesaModal(true);
 
-            // Auto-close after 3s (handled in overlay component)
-            const closeTimeout = setTimeout(() => {
-              setShowMpesaModal(false);
-            }, 3000);
-            timeouts.push(closeTimeout);
+              // Auto-close after 3s (handled in overlay component)
+              const closeTimeout = setTimeout(() => {
+                if (isInViewRef.current) {
+                  setShowMpesaModal(false);
+                }
+              }, 3000);
+              timeouts.push(closeTimeout);
+            }
           }
         }, message.delay);
         timeouts.push(messageTimeout);
       } else {
         // User or system messages appear directly
         const messageTimeout = setTimeout(() => {
-          setDisplayedMessages((prev) => [...prev, message]);
+          if (isInViewRef.current) {
+            setDisplayedMessages((prev) => [...prev, message]);
+          }
         }, message.delay);
         timeouts.push(messageTimeout);
       }
     });
 
+    // Loop timer: After total duration + 5s pause, reset and restart
+    const loopTimeout = setTimeout(() => {
+      if (isInViewRef.current) {
+        resetSimulator();
+        // The useEffect will re-run and start the loop again
+      }
+    }, totalScriptDuration);
+    timeouts.push(loopTimeout);
+
     return () => {
       timeouts.forEach(clearTimeout);
     };
-  }, [activeTab, currentScenario]);
+  }, [activeTab, currentScenario, isInView, totalScriptDuration]);
 
   // Typing indicator visibility
   const showTyping = isTyping;
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-center px-4 py-12">
+    <div
+      ref={containerRef}
+      className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-center px-4 py-12"
+    >
       {/* Tabs - Mobile: Above, Desktop: Left */}
       <div className="w-full md:w-auto">
         <PlatformTabs activeTab={activeTab} onTabChange={setActiveTab} />
