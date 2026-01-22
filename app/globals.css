@@ -2,8 +2,8 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-philia-purple: #4C1D95;
-  --color-philia-accent: #8B5CF6;
+  --color-philia-purple: #7C3AED;
+  --color-philia-accent: #A78BFA;
   --color-philia-light: #F9FAFB;
 
   --animate-fade-up: fade-up 0.6s ease-out both;

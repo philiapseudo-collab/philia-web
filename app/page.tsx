@@ -23,33 +23,15 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-6xl">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            {/* Custom P Logo SVG */}
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8"
-            >
-              {/* First rounded rectangle (vertical stem of P) */}
-              <rect
-                x="6"
-                y="6"
-                width="6"
-                height="20"
-                rx="3"
-                fill="currentColor"
-                className="text-indigo-700"
-              />
-              {/* Second rounded rectangle (loop of P) */}
-              <path
-                d="M12 6C12 6 12 6 12 6C12 6 20 6 20 6C23.314 6 26 8.686 26 12C26 15.314 23.314 18 20 18L12 18L12 6Z"
-                fill="currentColor"
-                className="text-indigo-700"
-                opacity="0.9"
-              />
-            </svg>
+            {/* 3D PT Logo */}
+            <Image
+              src="/pt-logo.png"
+              alt="Philia Technologies Logo"
+              width={40}
+              height={40}
+              className="w-10 h-10"
+              priority
+            />
 
             {/* Brand Name */}
             <span className="font-bold text-xl tracking-tight text-gray-900">
