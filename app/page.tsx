@@ -33,8 +33,8 @@ export default function Home() {
               className="w-10 h-10"
             >
               <defs>
-                {/* Purple gradient - lighter top-left to darker bottom-right */}
-                <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                {/* Purple gradient - lighter top to darker bottom */}
+                <linearGradient id="purpleGradient" x1="50%" y1="0%" x2="50%" y2="100%">
                   <stop offset="0%" stopColor="#A78BFA" />
                   <stop offset="100%" stopColor="#7C3AED" />
                 </linearGradient>
@@ -43,37 +43,37 @@ export default function Home() {
               {/* Purple gradient circle background */}
               <circle cx="24" cy="24" r="22" fill="url(#purpleGradient)" />
 
-              {/* Letter p - vertical stem */}
+              {/* Letter p - vertical stem going down */}
               <path
-                d="M14 16 L14 36"
+                d="M12 14 L12 38"
                 stroke="white"
-                strokeWidth="3.5"
+                strokeWidth="4"
                 strokeLinecap="round"
               />
 
-              {/* Letter p - bowl outline */}
+              {/* Letter p - bowl (circle with hole) */}
               <circle
-                cx="20"
-                cy="20"
+                cx="18"
+                cy="18"
                 r="6"
                 stroke="white"
-                strokeWidth="3.5"
+                strokeWidth="4"
                 fill="none"
               />
 
-              {/* Letter T - full horizontal bar */}
+              {/* Letter T - full horizontal crossbar (extends both left and right) */}
               <path
-                d="M26 14 L38 14"
+                d="M26 12 L42 12"
                 stroke="white"
-                strokeWidth="3.5"
+                strokeWidth="4"
                 strokeLinecap="round"
               />
 
-              {/* Letter T - vertical stem dropping down */}
+              {/* Letter T - vertical stem from center of crossbar */}
               <path
-                d="M38 14 L38 38"
+                d="M34 12 L34 38"
                 stroke="white"
-                strokeWidth="3.5"
+                strokeWidth="4"
                 strokeLinecap="round"
               />
             </svg>
