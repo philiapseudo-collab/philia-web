@@ -61,9 +61,9 @@ export default function Home() {
                 fill="none"
               />
 
-              {/* Letter T - horizontal bar extending from p bowl */}
+              {/* Letter T - full horizontal bar */}
               <path
-                d="M26 16 L36 16"
+                d="M26 14 L38 14"
                 stroke="white"
                 strokeWidth="3.5"
                 strokeLinecap="round"
@@ -71,7 +71,7 @@ export default function Home() {
 
               {/* Letter T - vertical stem dropping down */}
               <path
-                d="M36 16 L36 36"
+                d="M38 14 L38 38"
                 stroke="white"
                 strokeWidth="3.5"
                 strokeLinecap="round"
