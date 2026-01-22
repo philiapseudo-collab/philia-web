@@ -85,10 +85,10 @@ export default function Home() {
             {/* Left: Text Content */}
             <div className="flex flex-col gap-6">
               <h2 className="text-3xl font-bold text-philia-purple md:text-4xl">
-                More Than Just a Chatbot.
+                Your Complete AI Sales Command Center.
               </h2>
               <p className="text-lg text-gray-700">
-                Every agent comes with a Merchant Portal to manage your business.
+                Every AI Sales Agent comes with a Merchant Portal to manage your business.
               </p>
               <ul className="flex flex-col gap-4">
                 <li className="flex items-start gap-3">
@@ -137,7 +137,7 @@ export default function Home() {
                 M-Pesa Native
               </h3>
               <p className="text-gray-600">
-                STK Pushes and Paybill verification built-in. No manual checking.
+                STK Pushes and Paybill verification built-in. No manual checking required.
               </p>
             </div>
 
@@ -148,7 +148,7 @@ export default function Home() {
                 Instant Speed
               </h3>
               <p className="text-gray-600">
-                Hosted on edge servers for 0.2s response times on 4G.
+                Hosted on edge servers for 0.2s response times, ensuring no customer is ever left waiting.
               </p>
             </div>
 
@@ -156,10 +156,10 @@ export default function Home() {
             <div className="p-8 rounded-2xl border border-gray-100 bg-white transition-all hover:shadow-lg hover:border-philia-purple/30 h-full flex flex-col">
               <ShieldCheck className="h-10 w-10 text-philia-accent mb-4" />
               <h3 className="text-xl font-bold text-gray-900 mb-2">
-                We Handle The Code
+                Zero Maintenance Required
               </h3>
               <p className="text-gray-600">
-                You focus on sales. We ensure the bot runs 24/7.
+                You focus on growing your brand. We ensure your AI Agent runs flawlessly 24/7.
               </p>
             </div>
           </div>
