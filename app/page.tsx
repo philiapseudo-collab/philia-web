@@ -32,32 +32,48 @@ export default function Home() {
               xmlns="http://www.w3.org/2000/svg"
               className="w-10 h-10"
             >
-              {/* White circular background */}
-              <circle cx="24" cy="24" r="22" fill="white" stroke="#E5E7EB" strokeWidth="1" />
+              <defs>
+                {/* Purple gradient - lighter top-left to darker bottom-right */}
+                <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#A78BFA" />
+                  <stop offset="100%" stopColor="#7C3AED" />
+                </linearGradient>
+              </defs>
 
-              {/* Letter p - vertical stem going down */}
+              {/* Purple gradient circle background */}
+              <circle cx="24" cy="24" r="22" fill="url(#purpleGradient)" />
+
+              {/* Letter p - vertical stem */}
               <path
-                d="M16 14 L16 36"
-                stroke="#7C3AED"
-                strokeWidth="4"
+                d="M14 16 L14 36"
+                stroke="white"
+                strokeWidth="3.5"
                 strokeLinecap="round"
               />
 
-              {/* Letter p - bowl (circular part) */}
+              {/* Letter p - bowl outline */}
               <circle
-                cx="22"
+                cx="20"
                 cy="20"
-                r="8"
-                stroke="#7C3AED"
-                strokeWidth="4"
+                r="6"
+                stroke="white"
+                strokeWidth="3.5"
                 fill="none"
               />
 
-              {/* Letter T - horizontal bar extending right from bowl */}
+              {/* Letter T - horizontal bar extending from p bowl */}
               <path
-                d="M30 20 L38 20"
-                stroke="#A78BFA"
-                strokeWidth="4"
+                d="M26 16 L36 16"
+                stroke="white"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
+
+              {/* Letter T - vertical stem dropping down */}
+              <path
+                d="M36 16 L36 36"
+                stroke="white"
+                strokeWidth="3.5"
                 strokeLinecap="round"
               />
             </svg>
