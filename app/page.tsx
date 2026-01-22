@@ -35,32 +35,27 @@ export default function Home() {
               {/* White circular background */}
               <circle cx="24" cy="24" r="22" fill="white" stroke="#E5E7EB" strokeWidth="1" />
 
-              {/* Letter P - curved stem and bowl */}
+              {/* Letter p - vertical stem going down */}
               <path
-                d="M14 14 L14 34 C14 34 14 34 14 34"
+                d="M16 14 L16 36"
                 stroke="#7C3AED"
                 strokeWidth="4"
                 strokeLinecap="round"
-                fill="none"
               />
-              <path
-                d="M14 14 C14 14 14 14 14 14 L22 14 C26.418 14 30 17.582 30 22 C30 26.418 26.418 30 22 30 L14 30"
+
+              {/* Letter p - bowl (circular part) */}
+              <circle
+                cx="22"
+                cy="20"
+                r="8"
                 stroke="#7C3AED"
                 strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
                 fill="none"
               />
 
-              {/* Letter T - horizontal bar and vertical stem */}
+              {/* Letter T - horizontal bar extending right from bowl */}
               <path
-                d="M22 22 L36 22"
-                stroke="#A78BFA"
-                strokeWidth="4"
-                strokeLinecap="round"
-              />
-              <path
-                d="M29 22 L29 34"
+                d="M30 20 L38 20"
                 stroke="#A78BFA"
                 strokeWidth="4"
                 strokeLinecap="round"
