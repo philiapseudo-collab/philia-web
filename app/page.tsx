@@ -155,7 +155,7 @@ export default function Home() {
                 <li className="flex items-start gap-3">
                   <CheckCircle2 className="h-6 w-6 text-philia-purple flex-shrink-0 mt-0.5" />
                   <span className="text-gray-700">
-                    Live Inventory Sync across WhatsApp & Instagram.
+                    Live Inventory Sync across WhatsApp, Instagram & TikTok.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
