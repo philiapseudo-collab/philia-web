@@ -1,0 +1,35 @@
+<svg width="512" height="512" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White circular background -->
+  <circle cx="24" cy="24" r="22" fill="white" stroke="#E5E7EB" stroke-width="0.5"/>
+  
+  <!-- Letter P - curved stem and bowl -->
+  <path
+    d="M14 14 L14 34"
+    stroke="#7C3AED"
+    stroke-width="4"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <path
+    d="M14 14 L22 14 C26.418 14 30 17.582 30 22 C30 26.418 26.418 30 22 30 L14 30"
+    stroke="#7C3AED"
+    stroke-width="4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+  
+  <!-- Letter T - horizontal bar and vertical stem -->
+  <path
+    d="M22 22 L36 22"
+    stroke="#A78BFA"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <path
+    d="M29 22 L29 34"
+    stroke="#A78BFA"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+</svg>

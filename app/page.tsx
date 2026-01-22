@@ -23,15 +23,49 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-6xl">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            {/* 3D PT Logo */}
-            <Image
-              src="/pt-logo.png"
-              alt="Philia Technologies Logo"
-              width={40}
-              height={40}
+            {/* PT Logo SVG */}
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
               className="w-10 h-10"
-              priority
-            />
+            >
+              {/* White circular background */}
+              <circle cx="24" cy="24" r="22" fill="white" stroke="#E5E7EB" strokeWidth="1" />
+
+              {/* Letter P - curved stem and bowl */}
+              <path
+                d="M14 14 L14 34 C14 34 14 34 14 34"
+                stroke="#7C3AED"
+                strokeWidth="4"
+                strokeLinecap="round"
+                fill="none"
+              />
+              <path
+                d="M14 14 C14 14 14 14 14 14 L22 14 C26.418 14 30 17.582 30 22 C30 26.418 26.418 30 22 30 L14 30"
+                stroke="#7C3AED"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+
+              {/* Letter T - horizontal bar and vertical stem */}
+              <path
+                d="M22 22 L36 22"
+                stroke="#A78BFA"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+              <path
+                d="M29 22 L29 34"
+                stroke="#A78BFA"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+            </svg>
 
             {/* Brand Name */}
             <span className="font-bold text-xl tracking-tight text-gray-900">
