@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philia Technologies - Brand Image Generator</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #F9FAFB;
+            padding: 20px;
+        }
+        canvas {
+            border: 2px solid #4C1D95;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #4C1D95;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #8B5CF6;
+        }
+        .info {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: #4C1D95; margin-bottom: 20px;">Philia Technologies</h1>
+    <canvas id="brandCanvas" width="1024" height="1024"></canvas>
+    <button onclick="downloadImage()">Download Image (PNG)</button>
+    <div class="info">1024x1024px • Brand Colors: Purple (#4C1D95) & Accent (#8B5CF6)</div>
+
+    <script>
+        const canvas = document.getElementById('brandCanvas');
+        const ctx = canvas.getContext('2d');
+        const size = 1024;
+
+        // Brand colors
+        const philiaPurple = '#4C1D95';
+        const philiaAccent = '#8B5CF6';
+        const philiaLight = '#F9FAFB';
+
+        // Create gradient background
+        const gradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+        gradient.addColorStop(0, philiaAccent + '20'); // 20% opacity
+        gradient.addColorStop(0.5, philiaPurple + '10'); // 10% opacity
+        gradient.addColorStop(1, '#FFFFFF');
+
+        // Fill background
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, size, size);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, size, size);
+
+        // Draw geometric pattern
+        ctx.strokeStyle = philiaPurple;
+        ctx.lineWidth = 8;
+        
+        // Draw circles
+        for (let i = 0; i < 5; i++) {
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, 200 + (i * 80), 0, Math.PI * 2);
+            ctx.strokeStyle = i % 2 === 0 ? philiaPurple : philiaAccent;
+            ctx.lineWidth = 6 - i;
+            ctx.stroke();
+        }
+
+        // Draw "P" letter in center
+        ctx.fillStyle = philiaPurple;
+        ctx.font = 'bold 320px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('P', size/2, size/2 - 40);
+
+        // Add "Philia Technologies" text at bottom
+        ctx.fillStyle = philiaPurple;
+        ctx.font = 'bold 48px Inter, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('Philia Technologies', size/2, size - 60);
+
+        // Add tagline
+        ctx.fillStyle = '#666';
+        ctx.font = '32px Inter, sans-serif';
+        ctx.fillText('AI Sales Agents for Kenya', size/2, size - 20);
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'philia-technologies-brand-1024x1024.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Auto-generate on load
+        console.log('Brand image generated! Click the button to download.');
+    </script>
+</body>
+</html>

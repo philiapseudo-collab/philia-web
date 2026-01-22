@@ -169,29 +169,32 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-philia-purple text-white py-12">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-6xl mx-auto">
-            {/* Logo/Brand */}
-            <div className="text-lg font-bold">Philia Technologies</div>
+          <div className="flex flex-col gap-6 max-w-6xl mx-auto">
+            {/* Top Row: Logo */}
+            <div className="text-xl font-bold">Philia Technologies</div>
 
-            {/* Links */}
-            <div className="flex flex-wrap items-center gap-6 justify-center md:justify-start">
-              <Link
-                href="#"
-                className="text-purple-200 hover:text-white transition-colors"
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href="#"
-                className="text-purple-200 hover:text-white transition-colors"
-              >
-                Terms of Service
-              </Link>
-            </div>
+            {/* Bottom Row: Copyright and Links */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+              {/* Copyright */}
+              <div className="text-purple-200">
+                © 2026 Philia Technologies. Built in Kenya.
+              </div>
 
-            {/* Copyright */}
-            <div className="text-sm text-purple-200 text-center md:text-right">
-              © 2026 Philia Technologies. Built in Juja.
+              {/* Legal Links */}
+              <div className="flex items-center gap-6">
+                <Link
+                  href="/privacy-policy"
+                  className="text-white/80 hover:text-white hover:underline transition-all cursor-pointer"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/terms-of-service"
+                  className="text-white/80 hover:text-white hover:underline transition-all cursor-pointer"
+                >
+                  Terms of Service
+                </Link>
+              </div>
             </div>
           </div>
         </div>
