@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
+  
+  // Optimize production builds
+  swcMinify: true, // Use SWC for faster minification
 
   // Image optimization
   images: {

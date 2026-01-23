@@ -5,6 +5,9 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap", // Prevents render blocking - shows fallback font immediately
+  preload: true, // Preloads the font for faster rendering
+  adjustFontFallback: true, // Reduces layout shift
 });
 
 export const metadata: Metadata = {

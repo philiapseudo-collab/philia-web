@@ -7,8 +7,17 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import ChatSimulator from "@/components/ChatSimulator";
-import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import dynamic from "next/dynamic";
+
+// Lazy load below-the-fold components to improve initial page load
+const ChatSimulator = dynamic(() => import("@/components/ChatSimulator"), {
+  loading: () => <div className="h-[600px] flex items-center justify-center text-gray-400">Loading demo...</div>,
+  ssr: true, // Still render on server for SEO
+});
+
+const FloatingWhatsAppButton = dynamic(() => import("@/components/FloatingWhatsAppButton"), {
+  ssr: false, // Only load on client since it's a floating button
+});
 
 const WHATSAPP_URL =
   "https://wa.me/254708116809?text=I%20am%20interested%20in%20a%20Philia%20Sales%20Agent";
@@ -204,7 +213,7 @@ export default function Home() {
                   src={DASHBOARD_IMAGE_URL}
                   alt="Merchant Dashboard Interface"
                   fill
-                  priority
+                  loading="lazy"
                   className="object-cover w-full h-auto"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
