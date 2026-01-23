@@ -1,0 +1,27 @@
+{
+    "name": "Philia Technologies",
+    "short_name": "Philia Tech",
+    "description": "AI Sales Agents for Kenya - Automate WhatsApp, Instagram & TikTok sales with M-Pesa integration",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#8B5CF6",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
