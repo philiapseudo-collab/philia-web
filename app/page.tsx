@@ -15,9 +15,9 @@ const ChatSimulator = dynamic(() => import("@/components/ChatSimulator"), {
   ssr: true, // Still render on server for SEO
 });
 
-const FloatingWhatsAppButton = dynamic(() => import("@/components/FloatingWhatsAppButton"), {
-  ssr: false, // Only load on client since it's a floating button
-});
+// FloatingWhatsAppButton is already a client component, so it will be code-split automatically
+// Import it normally - Next.js will handle the code splitting
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
 const WHATSAPP_URL =
   "https://wa.me/254708116809?text=I%20am%20interested%20in%20a%20Philia%20Sales%20Agent";
