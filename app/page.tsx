@@ -12,8 +12,7 @@ import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 
 const WHATSAPP_URL =
   "https://wa.me/254708116809?text=I%20am%20interested%20in%20a%20Philia%20Sales%20Agent";
-const DASHBOARD_IMAGE_URL =
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop";
+const DASHBOARD_IMAGE_URL = "/dashboard.jpg";
 
 export default function Home() {
   return (
@@ -205,6 +204,7 @@ export default function Home() {
                   src={DASHBOARD_IMAGE_URL}
                   alt="Merchant Dashboard Interface"
                   fill
+                  priority
                   className="object-cover w-full h-auto"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />

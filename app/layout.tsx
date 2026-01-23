@@ -23,10 +23,11 @@ export const metadata: Metadata = {
       "Automate WhatsApp, Instagram & TikTok sales with AI + M-Pesa integration. 24/7 automated customer engagement.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image-optimized.jpg",
         width: 1200,
         height: 630,
         alt: "Philia Technologies - AI Sales Agents for Kenya",
+        type: "image/jpeg",
       },
     ],
   },
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     title: "Philia Technologies | AI Sales Agents for Kenya",
     description:
       "Automate WhatsApp, Instagram & TikTok sales with AI + M-Pesa integration.",
-    images: ["/og-image.png"],
+    images: ["/og-image-optimized.jpg"],
     creator: "@PhiliaTech",
   },
 
