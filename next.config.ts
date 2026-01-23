@@ -7,6 +7,24 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
 
+  // Redirect bare domain to www for better performance and SEO
+  // Note: DNS-level redirects are faster, but this provides a fallback
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'philiatechnologies.com',
+          },
+        ],
+        destination: 'https://www.philiatechnologies.com/:path*',
+        permanent: true, // 301 redirect for SEO
+      },
+    ];
+  },
+
   // Image optimization
   images: {
     formats: ['image/avif', 'image/webp'],
