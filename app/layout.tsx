@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -8,6 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.philiatechnologies.com"),
   title: "Philia Technologies | AI Sales Agents for Kenya",
   description:
     "Automate sales on WhatsApp, Instagram & TikTok with custom AI agents and M-Pesa integration. 24/7 automated customer engagement.",
@@ -75,16 +76,14 @@ export const metadata: Metadata = {
   authors: [{ name: "Philia Technologies" }],
   creator: "Philia Technologies",
   publisher: "Philia Technologies",
+};
 
-  // Theme colors for mobile browsers
+// Viewport and theme configuration (separate export for Next.js 16)
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
   themeColor: "#8B5CF6",
-
-  // Viewport and mobile optimization
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
 };
 
 export default function RootLayout({
