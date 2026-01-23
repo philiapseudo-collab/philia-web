@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
   MessageCircle,
@@ -26,8 +25,8 @@ interface Message {
   sender: "user" | "bot" | "system";
   type: "text" | "image" | "prompt";
   content: string;
-  delay: number; // Time in ms before this message appears
-  triggerMpesa?: boolean; // Trigger M-Pesa overlay
+  delay: number;
+  triggerMpesa?: boolean;
 }
 
 interface Scenario {
@@ -43,25 +42,13 @@ interface MpesaDetails {
   business: string;
 }
 
-// Unique Brand Avatars
-const WHATSAPP_AVATAR_URL =
-  "https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=100&auto=format&fit=crop"; // Hardware/Construction
+// LOCAL Brand Avatars (no more external requests!)
+const WHATSAPP_AVATAR_URL = "/avatar-hardware.jpg";
+const INSTAGRAM_AVATAR_URL = "/avatar-sneaker.jpg";
+const TIKTOK_AVATAR_URL = "/avatar-gadget.jpg";
+const INSTAGRAM_PRODUCT_IMAGE_URL = "/product-sneaker.jpg";
 
-const INSTAGRAM_AVATAR_URL =
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=100&auto=format&fit=crop"; // Sneaker/Fashion
-
-const TIKTOK_AVATAR_URL =
-  "https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=100&auto=format&fit=crop"; // Tech/Gadget
-
-// Instagram Product Image URL
-const INSTAGRAM_PRODUCT_IMAGE_URL =
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop";
-
-// WhatsApp Background Pattern (Classic doodle)
-const WHATSAPP_BG_PATTERN =
-  "https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png";
-
-// Scenario Data (Updated with Payment Flows)
+// Scenario Data
 const scenarios: Scenario[] = [
   {
     id: "whatsapp",
@@ -69,49 +56,12 @@ const scenarios: Scenario[] = [
     businessName: "Jenga Hardware",
     avatar: WHATSAPP_AVATAR_URL,
     messages: [
-      {
-        id: "w1",
-        sender: "user",
-        type: "text",
-        content: "Do you have Simba Cement?",
-        delay: 0,
-      },
-      {
-        id: "w2",
-        sender: "bot",
-        type: "text",
-        content: "Yes! 50kg bag is KES 750. We have 40 bags left.",
-        delay: 1000,
-      },
-      {
-        id: "w3",
-        sender: "user",
-        type: "text",
-        content: "I need 10 bags.",
-        delay: 1800,
-      },
-      {
-        id: "w4",
-        sender: "bot",
-        type: "text",
-        content: "Total: KES 7,500. Sending M-Pesa prompt...",
-        delay: 2800,
-        triggerMpesa: true, // Trigger overlay here
-      },
-      {
-        id: "w5",
-        sender: "system",
-        type: "prompt",
-        content: "✅ Payment Confirmed. Receipt: QDH82KL9M.",
-        delay: 6500, // After overlay closes (3s overlay + buffer)
-      },
-      {
-        id: "w6",
-        sender: "bot",
-        type: "text",
-        content: "Order confirmed! ✅ Delivery rider will call you shortly.",
-        delay: 7500,
-      },
+      { id: "w1", sender: "user", type: "text", content: "Do you have Simba Cement?", delay: 0 },
+      { id: "w2", sender: "bot", type: "text", content: "Yes! 50kg bag is KES 750. We have 40 bags left.", delay: 1000 },
+      { id: "w3", sender: "user", type: "text", content: "I need 10 bags.", delay: 1800 },
+      { id: "w4", sender: "bot", type: "text", content: "Total: KES 7,500. Sending M-Pesa prompt...", delay: 2800, triggerMpesa: true },
+      { id: "w5", sender: "system", type: "prompt", content: "✅ Payment Confirmed. Receipt: QDH82KL9M.", delay: 6500 },
+      { id: "w6", sender: "bot", type: "text", content: "Order confirmed! ✅ Delivery rider will call you shortly.", delay: 7500 },
     ],
   },
   {
@@ -120,49 +70,12 @@ const scenarios: Scenario[] = [
     businessName: "Nairobi Kicks",
     avatar: INSTAGRAM_AVATAR_URL,
     messages: [
-      {
-        id: "i1",
-        sender: "user",
-        type: "text",
-        content: "Size 42 available?",
-        delay: 0,
-      },
-      {
-        id: "i2",
-        sender: "bot",
-        type: "text",
-        content: "Yes! 2 pairs left in Size 42. Check them out:",
-        delay: 1000,
-      },
-      {
-        id: "i3",
-        sender: "bot",
-        type: "image",
-        content: "Product Card",
-        delay: 1800,
-      },
-      {
-        id: "i4",
-        sender: "user",
-        type: "text",
-        content: "I'll take it!",
-        delay: 3300, // 1.5s after product shown
-      },
-      {
-        id: "i5",
-        sender: "bot",
-        type: "text",
-        content: "Great! Sending M-Pesa request...",
-        delay: 4100, // 0.8s after user
-        triggerMpesa: true,
-      },
-      {
-        id: "i6",
-        sender: "bot",
-        type: "text",
-        content: "Paid! We will DM the delivery details. 📦",
-        delay: 7700, // After overlay
-      },
+      { id: "i1", sender: "user", type: "text", content: "Size 42 available?", delay: 0 },
+      { id: "i2", sender: "bot", type: "text", content: "Yes! 2 pairs left in Size 42. Check them out:", delay: 1000 },
+      { id: "i3", sender: "bot", type: "image", content: "Product Card", delay: 1800 },
+      { id: "i4", sender: "user", type: "text", content: "I'll take it!", delay: 3300 },
+      { id: "i5", sender: "bot", type: "text", content: "Great! Sending M-Pesa request...", delay: 4100, triggerMpesa: true },
+      { id: "i6", sender: "bot", type: "text", content: "Paid! We will DM the delivery details. 📦", delay: 7700 },
     ],
   },
   {
@@ -171,126 +84,56 @@ const scenarios: Scenario[] = [
     businessName: "TechTrend Gadgets",
     avatar: TIKTOK_AVATAR_URL,
     messages: [
-      {
-        id: "t1",
-        sender: "user",
-        type: "text",
-        content: "Price?",
-        delay: 0,
-      },
-      {
-        id: "t2",
-        sender: "bot",
-        type: "text",
-        content: "KES 3,500. Reply with your number to order.",
-        delay: 1000,
-      },
-      {
-        id: "t3",
-        sender: "user",
-        type: "text",
-        content: "0722000000",
-        delay: 2500, // 1.5s reading pause
-      },
-      {
-        id: "t4",
-        sender: "bot",
-        type: "text",
-        content: "Sending M-Pesa request...",
-        delay: 3500,
-        triggerMpesa: true,
-      },
-      {
-        id: "t5",
-        sender: "bot",
-        type: "text",
-        content: "Order placed! 🚚 Shipping now.",
-        delay: 7000, // After overlay
-      },
+      { id: "t1", sender: "user", type: "text", content: "Price?", delay: 0 },
+      { id: "t2", sender: "bot", type: "text", content: "KES 3,500. Reply with your number to order.", delay: 1000 },
+      { id: "t3", sender: "user", type: "text", content: "0722000000", delay: 2500 },
+      { id: "t4", sender: "bot", type: "text", content: "Sending M-Pesa request...", delay: 3500, triggerMpesa: true },
+      { id: "t5", sender: "bot", type: "text", content: "Order placed! 🚚 Shipping now.", delay: 7000 },
     ],
   },
 ];
 
-// M-Pesa STK Push Overlay Component
-function MpesaOverlay({
-  details,
-  onClose,
-}: {
-  details: MpesaDetails;
-  onClose: () => void;
-}) {
+// CSS Animation Classes (replacing framer-motion)
+const fadeInUp = "animate-[fadeInUp_0.3s_ease-out_forwards]";
+const fadeIn = "animate-[fadeIn_0.2s_ease-out_forwards]";
+
+// M-Pesa STK Push Overlay Component (CSS animations instead of framer-motion)
+function MpesaOverlay({ details, onClose }: { details: MpesaDetails; onClose: () => void }) {
   const [pinDigits, setPinDigits] = useState(0);
 
   useEffect(() => {
-    // Auto-fill PIN animation (4 digits at 300ms intervals)
     const pinTimeouts: NodeJS.Timeout[] = [];
     for (let i = 1; i <= 4; i++) {
-      const timeout = setTimeout(() => {
-        setPinDigits(i);
-      }, i * 300);
-      pinTimeouts.push(timeout);
+      pinTimeouts.push(setTimeout(() => setPinDigits(i), i * 300));
     }
-
-    // Auto-click OK after all digits filled + 200ms
-    const okTimeout = setTimeout(() => {
-      onClose();
-    }, 4 * 300 + 200);
-    pinTimeouts.push(okTimeout);
-
-    return () => {
-      pinTimeouts.forEach(clearTimeout);
-    };
+    pinTimeouts.push(setTimeout(onClose, 4 * 300 + 200));
+    return () => pinTimeouts.forEach(clearTimeout);
   }, [onClose]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
-    >
-      {/* STK Push Modal */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white rounded-lg shadow-2xl p-6 w-[280px] border border-gray-300"
-      >
-        {/* Header */}
+    <div className={`absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm ${fadeIn}`}>
+      <div className={`bg-white rounded-lg shadow-2xl p-6 w-[280px] border border-gray-300 ${fadeInUp}`}>
         <div className="text-center mb-4">
           <h4 className="text-green-600 font-bold text-lg">M-PESA</h4>
         </div>
-
-        {/* Body */}
         <div className="text-center mb-6">
           <p className="text-gray-800 text-sm leading-relaxed">
-            Do you wish to pay{" "}
-            <span className="font-semibold">{details.amount}</span> to{" "}
+            Do you wish to pay <span className="font-semibold">{details.amount}</span> to{" "}
             <span className="font-semibold">{details.business}</span>?
           </p>
           <p className="text-gray-600 text-xs mt-2">Enter PIN:</p>
         </div>
-
-        {/* PIN Input Field (Dummy) */}
         <div className="flex items-center justify-center mb-6">
           <div className="bg-gray-100 border border-gray-300 rounded px-4 py-2 w-full text-center">
-            <span className="text-2xl tracking-widest text-gray-800">
-              {"*".repeat(pinDigits)}
-            </span>
+            <span className="text-2xl tracking-widest text-gray-800">{"*".repeat(pinDigits)}</span>
           </div>
         </div>
-
-        {/* Buttons */}
         <div className="flex gap-2">
-          <button className="flex-1 bg-gray-200 text-gray-700 py-2 rounded text-sm font-medium hover:bg-gray-300 transition">
-            Cancel
-          </button>
-          <button className="flex-1 bg-green-600 text-white py-2 rounded text-sm font-medium hover:bg-green-700 transition">
-            OK
-          </button>
+          <button className="flex-1 bg-gray-200 text-gray-700 py-2 rounded text-sm font-medium">Cancel</button>
+          <button className="flex-1 bg-green-600 text-white py-2 rounded text-sm font-medium">OK</button>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -309,7 +152,6 @@ function FakeInputBar({ platform }: { platform: Platform }) {
       </div>
     );
   }
-
   if (platform === "instagram") {
     return (
       <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 flex items-center gap-2">
@@ -322,8 +164,6 @@ function FakeInputBar({ platform }: { platform: Platform }) {
       </div>
     );
   }
-
-  // TikTok
   return (
     <div className="absolute bottom-0 left-0 right-0 bg-zinc-900 px-4 py-2 flex items-center gap-2">
       <div className="flex-1 bg-zinc-800 rounded-full px-4 py-2">
@@ -336,196 +176,93 @@ function FakeInputBar({ platform }: { platform: Platform }) {
   );
 }
 
-// Typing Indicator Component
+// Typing Indicator Component (CSS animation)
 function TypingIndicator({ platform }: { platform: Platform }) {
   const isDark = platform === "tiktok";
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      className={`flex items-center gap-1 ${isDark ? "bg-zinc-800" : "bg-gray-100"
-        } rounded-2xl px-4 py-2 w-fit`}
-    >
+    <div className={`flex items-center gap-1 ${isDark ? "bg-zinc-800" : "bg-gray-100"} rounded-2xl px-4 py-2 w-fit ${fadeInUp}`}>
       <div className="flex gap-1">
         {[0, 1, 2].map((i) => (
-          <motion.div
+          <div
             key={i}
-            className={`h-2 w-2 rounded-full ${isDark ? "bg-cyan-400" : "bg-gray-500"
-              }`}
-            animate={{
-              y: [0, -8, 0],
-            }}
-            transition={{
-              duration: 0.6,
-              repeat: Infinity,
-              delay: i * 0.2,
-            }}
+            className={`h-2 w-2 rounded-full ${isDark ? "bg-cyan-400" : "bg-gray-500"} animate-bounce`}
+            style={{ animationDelay: `${i * 0.15}s`, animationDuration: "0.6s" }}
           />
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// Chat Bubble Component (Updated with Blue Ticks & Price Badge)
-function ChatBubble({
-  message,
-  platform,
-  avatarUrl,
-}: {
-  message: Message;
-  platform: Platform;
-  avatarUrl: string;
-}) {
+// Chat Bubble Component (CSS animations)
+function ChatBubble({ message, platform, avatarUrl }: { message: Message; platform: Platform; avatarUrl: string }) {
   const isUser = message.sender === "user";
   const isSystem = message.sender === "system";
-  const isDark = platform === "tiktok";
 
-  // System message (Payment confirmation)
   if (isSystem) {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center justify-center gap-2 py-2"
-      >
+      <div className={`flex items-center justify-center gap-2 py-2 ${fadeIn}`}>
         <CheckCircle2 className="h-4 w-4 text-green-500" />
         <span className="text-xs text-gray-500">{message.content}</span>
-      </motion.div>
+      </div>
     );
   }
 
-  // Image message (Instagram Product Card with Price Badge)
   if (message.type === "image") {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 10 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="flex justify-start items-end gap-2 mb-2"
-      >
-        {/* Bot Avatar */}
-        <Image
-          src={avatarUrl}
-          alt="Business avatar"
-          width={24}
-          height={24}
-          className="rounded-full w-6 h-6 flex-shrink-0"
-        />
-        {/* Product Image with Price Badge */}
+      <div className={`flex justify-start items-end gap-2 mb-2 ${fadeInUp}`}>
+        <Image src={avatarUrl} alt="Business avatar" width={24} height={24} className="rounded-full w-6 h-6 flex-shrink-0" />
         <div className="rounded-lg overflow-hidden w-48 h-32 relative">
-          <Image
-            src={INSTAGRAM_PRODUCT_IMAGE_URL}
-            alt="Product"
-            fill
-            className="object-cover"
-            sizes="192px"
-          />
-          {/* Price Badge (Bottom-left with Glassmorphism) */}
+          <Image src={INSTAGRAM_PRODUCT_IMAGE_URL} alt="Product" fill className="object-cover" sizes="192px" />
           <div className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full">
             KES 4,500
           </div>
         </div>
-      </motion.div>
+      </div>
     );
   }
 
-  // Text message bubbles
   const bubbleClasses = isUser
-    ? platform === "whatsapp"
-      ? "bg-green-100 text-gray-900"
-      : platform === "instagram"
-        ? "bg-gray-200 text-gray-900 rounded-full" // Messenger-style
+    ? platform === "whatsapp" ? "bg-green-100 text-gray-900"
+      : platform === "instagram" ? "bg-gray-200 text-gray-900 rounded-full"
         : "bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
-    : platform === "whatsapp"
-      ? "bg-white text-gray-900"
-      : platform === "instagram"
-        ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+    : platform === "whatsapp" ? "bg-white text-gray-900"
+      : platform === "instagram" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
         : "bg-zinc-800 text-gray-100";
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9, y: 10 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      className={`flex ${isUser ? "justify-end" : "justify-start"} items-end gap-2 mb-2`}
-    >
-      {/* Bot Avatar - Only show for bot messages */}
-      {!isUser && (
-        <Image
-          src={avatarUrl}
-          alt="Business avatar"
-          width={24}
-          height={24}
-          className="rounded-full w-6 h-6 flex-shrink-0"
-        />
-      )}
-      <div
-        className={`${bubbleClasses} ${platform === "instagram" && isUser ? "" : "rounded-2xl"
-          } px-4 py-2 max-w-[75%] ${isUser && platform !== "instagram" ? "rounded-tr-sm" : ""
-          } ${!isUser && platform !== "instagram" ? "rounded-tl-sm" : ""}`}
-      >
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} items-end gap-2 mb-2 ${fadeInUp}`}>
+      {!isUser && <Image src={avatarUrl} alt="Business avatar" width={24} height={24} className="rounded-full w-6 h-6 flex-shrink-0" />}
+      <div className={`${bubbleClasses} ${platform === "instagram" && isUser ? "" : "rounded-2xl"} px-4 py-2 max-w-[75%] ${isUser && platform !== "instagram" ? "rounded-tr-sm" : ""} ${!isUser && platform !== "instagram" ? "rounded-tl-sm" : ""}`}>
         <p className="text-sm leading-relaxed">{message.content}</p>
-        {/* Blue Ticks (WhatsApp User Messages Only) */}
         {isUser && platform === "whatsapp" && (
           <div className="flex justify-end mt-1">
             <CheckCheck className="h-3 w-3 text-blue-500" />
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
-// Phone Frame Component (Updated with Background & Input Bar)
-function PhoneFrame({
-  children,
-  platform,
-}: {
-  children: React.ReactNode;
-  platform: Platform;
-}) {
+// Phone Frame Component (simplified - no external background)
+function PhoneFrame({ children, platform }: { children: React.ReactNode; platform: Platform }) {
   const isDark = platform === "tiktok";
-  const bgStyle =
-    platform === "whatsapp"
-      ? {
-        backgroundImage: `url(${WHATSAPP_BG_PATTERN})`,
-        backgroundRepeat: "repeat",
-        backgroundSize: "400px",
-      }
-      : {};
-
-  const bgColor =
-    platform === "whatsapp"
-      ? "bg-[#e5ddd5]"
-      : platform === "instagram"
-        ? "bg-white"
-        : "bg-black";
+  const bgColor = platform === "whatsapp" ? "bg-[#e5ddd5]" : platform === "instagram" ? "bg-white" : "bg-black";
 
   return (
     <div className="relative w-[320px] mx-auto">
-      {/* Phone Frame */}
       <div className="relative border-4 border-gray-800 rounded-[2.5rem] overflow-hidden shadow-2xl">
-        {/* Status Bar */}
-        <div
-          className={`${isDark ? "bg-black" : "bg-white"
-            } px-6 py-2 flex items-center justify-between text-xs z-10 relative`}
-        >
+        <div className={`${isDark ? "bg-black" : "bg-white"} px-6 py-2 flex items-center justify-between text-xs z-10 relative`}>
           <span className={isDark ? "text-white" : "text-black"}>9:41</span>
           <div className="flex items-center gap-1">
             <Wifi className={`h-3 w-3 ${isDark ? "text-white" : "text-black"}`} />
             <Battery className={`h-3 w-3 ${isDark ? "text-white" : "text-black"}`} />
           </div>
         </div>
-
-        {/* Screen Content */}
-        <div
-          className={`${bgColor} h-[600px] p-4 pb-16 overflow-y-auto relative`}
-          style={bgStyle}
-        >
+        <div className={`${bgColor} h-[600px] p-4 pb-16 overflow-y-auto relative`}>
           {children}
         </div>
-
-        {/* Fake Input Bar */}
         <FakeInputBar platform={platform} />
       </div>
     </div>
@@ -533,13 +270,7 @@ function PhoneFrame({
 }
 
 // Platform Tabs Component
-function PlatformTabs({
-  activeTab,
-  onTabChange,
-}: {
-  activeTab: Platform;
-  onTabChange: (platform: Platform) => void;
-}) {
+function PlatformTabs({ activeTab, onTabChange }: { activeTab: Platform; onTabChange: (platform: Platform) => void }) {
   const tabs = [
     { id: "whatsapp" as Platform, icon: MessageCircle, label: "WhatsApp" },
     { id: "instagram" as Platform, icon: Instagram, label: "Instagram" },
@@ -561,10 +292,7 @@ function PlatformTabs({
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`flex items-center gap-2 px-4 py-3 rounded-lg transition-colors ${isActive
-              ? getActiveClasses(tab.id)
-              : "text-gray-500 hover:text-gray-900"
-              }`}
+            className={`flex items-center gap-2 px-4 py-3 rounded-lg transition-colors ${isActive ? getActiveClasses(tab.id) : "text-gray-500 hover:text-gray-900"}`}
             aria-label={`Switch to ${tab.label} demo`}
           >
             <Icon className="h-5 w-5" />
@@ -582,213 +310,89 @@ export default function ChatSimulator() {
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [showMpesaModal, setShowMpesaModal] = useState(false);
-  const [mpesaDetails, setMpesaDetails] = useState<MpesaDetails>({
-    amount: "",
-    business: "",
-  });
+  const [mpesaDetails, setMpesaDetails] = useState<MpesaDetails>({ amount: "", business: "" });
   const [isInView, setIsInView] = useState(false);
-  const [restartKey, setRestartKey] = useState(0); // Trigger to restart the loop
+  const [restartKey, setRestartKey] = useState(0);
 
-  // Refs
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInViewRef = useRef(false); // Track current isInView to avoid stale closures
-
+  const isInViewRef = useRef(false);
   const currentScenario = scenarios.find((s) => s.id === activeTab)!;
+  const totalScriptDuration = Math.max(...currentScenario.messages.map((m) => m.delay)) + 5000;
 
-  // Calculate total script duration (max delay + 5s pause buffer)
-  const totalScriptDuration =
-    Math.max(...currentScenario.messages.map((m) => m.delay)) + 5000;
-
-  // Reset function - clears all state
   const resetSimulator = () => {
     setDisplayedMessages([]);
     setIsTyping(false);
-    setShowMpesaModal(false); // Force close M-Pesa modal
+    setShowMpesaModal(false);
     setMpesaDetails({ amount: "", business: "" });
   };
 
-  // IntersectionObserver: Detect when component is in viewport
   useEffect(() => {
     if (!containerRef.current) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
-        const entry = entries[0];
-        const inView = entry.isIntersecting;
-        isInViewRef.current = inView; // Update ref immediately
+        const inView = entries[0].isIntersecting;
+        isInViewRef.current = inView;
         setIsInView(inView);
       },
-      {
-        threshold: 0.1, // Trigger when 10% of component is visible
-        rootMargin: "50px", // Start slightly before entering viewport
-      }
+      { threshold: 0.1, rootMargin: "50px" }
     );
-
     observer.observe(containerRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
-  // Reset restartKey when tab changes (clean restart)
-  useEffect(() => {
-    setRestartKey(0);
-  }, [activeTab]);
+  useEffect(() => { setRestartKey(0); }, [activeTab]);
 
-  // Main animation loop: Only runs when in view
   useEffect(() => {
-    // If out of view, reset and stop all timers
-    if (!isInView) {
-      resetSimulator();
-      return;
-    }
-
-    // Reset when starting (tab change or entering view)
+    if (!isInView) { resetSimulator(); return; }
     resetSimulator();
-
     const timeouts: NodeJS.Timeout[] = [];
 
-    // Schedule all messages
     currentScenario.messages.forEach((message) => {
       if (message.sender === "bot") {
-        // Show typing indicator 400ms before bot message
         const typingStartDelay = message.delay - 400;
         if (typingStartDelay >= 0) {
-          const typingTimeout = setTimeout(() => {
-            if (isInViewRef.current) {
-              setIsTyping(true);
-            }
-          }, typingStartDelay);
-          timeouts.push(typingTimeout);
+          timeouts.push(setTimeout(() => { if (isInViewRef.current) setIsTyping(true); }, typingStartDelay));
         }
-
-        // Hide typing and show bot message at the specified delay
-        const messageTimeout = setTimeout(() => {
+        timeouts.push(setTimeout(() => {
           if (isInViewRef.current) {
             setIsTyping(false);
             setDisplayedMessages((prev) => [...prev, message]);
-
-            // Trigger M-Pesa overlay if flagged
             if (message.triggerMpesa) {
-              const amount =
-                activeTab === "whatsapp"
-                  ? "KES 7,500"
-                  : activeTab === "instagram"
-                    ? "KES 4,500"
-                    : "KES 3,500";
-              const business =
-                activeTab === "whatsapp"
-                  ? "JENGA HARDWARE"
-                  : activeTab === "instagram"
-                    ? "NAIROBI KICKS"
-                    : "TECHTREND GADGETS";
+              const amount = activeTab === "whatsapp" ? "KES 7,500" : activeTab === "instagram" ? "KES 4,500" : "KES 3,500";
+              const business = activeTab === "whatsapp" ? "JENGA HARDWARE" : activeTab === "instagram" ? "NAIROBI KICKS" : "TECHTREND GADGETS";
               setMpesaDetails({ amount, business });
               setShowMpesaModal(true);
-
-              // Auto-close after 3s (handled in overlay component)
-              const closeTimeout = setTimeout(() => {
-                if (isInViewRef.current) {
-                  setShowMpesaModal(false);
-                }
-              }, 3000);
-              timeouts.push(closeTimeout);
+              timeouts.push(setTimeout(() => { if (isInViewRef.current) setShowMpesaModal(false); }, 3000));
             }
           }
-        }, message.delay);
-        timeouts.push(messageTimeout);
+        }, message.delay));
       } else {
-        // User or system messages appear directly
-        const messageTimeout = setTimeout(() => {
-          if (isInViewRef.current) {
-            setDisplayedMessages((prev) => [...prev, message]);
-          }
-        }, message.delay);
-        timeouts.push(messageTimeout);
+        timeouts.push(setTimeout(() => { if (isInViewRef.current) setDisplayedMessages((prev) => [...prev, message]); }, message.delay));
       }
     });
 
-    // Loop timer: After total duration + 5s pause, reset and restart
-    const loopTimeout = setTimeout(() => {
-      if (isInViewRef.current) {
-        resetSimulator();
-        // Trigger restart by incrementing restartKey (causes useEffect to re-run)
-        setRestartKey((prev) => prev + 1);
-      }
-    }, totalScriptDuration);
-    timeouts.push(loopTimeout);
-
-    return () => {
-      timeouts.forEach(clearTimeout);
-    };
+    timeouts.push(setTimeout(() => { if (isInViewRef.current) { resetSimulator(); setRestartKey((prev) => prev + 1); } }, totalScriptDuration));
+    return () => timeouts.forEach(clearTimeout);
   }, [activeTab, currentScenario, isInView, totalScriptDuration, restartKey]);
 
-  // Typing indicator visibility
-  const showTyping = isTyping;
-
   return (
-    <div
-      ref={containerRef}
-      className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-center px-4 py-12"
-    >
-      {/* Tabs - Mobile: Above, Desktop: Left */}
+    <div ref={containerRef} className="flex flex-col md:flex-row gap-8 items-start md:items-center justify-center px-4 py-12">
       <div className="w-full md:w-auto">
         <PlatformTabs activeTab={activeTab} onTabChange={setActiveTab} />
       </div>
-
-      {/* Phone Frame - Mobile: Below, Desktop: Right */}
       <div className="w-full md:w-auto relative">
         <PhoneFrame platform={activeTab}>
-          {/* Business Name Header */}
-          <div
-            className={`mb-4 pb-2 border-b flex items-center gap-3 ${activeTab === "tiktok" ? "border-gray-700" : "border-gray-200"
-              }`}
-          >
-            <Image
-              src={currentScenario.avatar}
-              alt={`${currentScenario.businessName} avatar`}
-              width={40}
-              height={40}
-              className="rounded-full w-10 h-10"
-            />
-            <h3
-              className={`font-semibold ${activeTab === "tiktok" ? "text-white" : "text-gray-900"
-                }`}
-            >
-              {currentScenario.businessName}
-            </h3>
+          <div className={`mb-4 pb-2 border-b flex items-center gap-3 ${activeTab === "tiktok" ? "border-gray-700" : "border-gray-200"}`}>
+            <Image src={currentScenario.avatar} alt={`${currentScenario.businessName} avatar`} width={40} height={40} className="rounded-full w-10 h-10" />
+            <h3 className={`font-semibold ${activeTab === "tiktok" ? "text-white" : "text-gray-900"}`}>{currentScenario.businessName}</h3>
           </div>
-
-          {/* Messages */}
           <div className="space-y-1">
-            <AnimatePresence>
-              {displayedMessages.map((message) => (
-                <ChatBubble
-                  key={message.id}
-                  message={message}
-                  platform={activeTab}
-                  avatarUrl={currentScenario.avatar}
-                />
-              ))}
-            </AnimatePresence>
-
-            {/* Typing Indicator */}
-            {showTyping && (
-              <AnimatePresence>
-                <TypingIndicator platform={activeTab} />
-              </AnimatePresence>
-            )}
+            {displayedMessages.map((message) => (
+              <ChatBubble key={message.id} message={message} platform={activeTab} avatarUrl={currentScenario.avatar} />
+            ))}
+            {isTyping && <TypingIndicator platform={activeTab} />}
           </div>
-
-          {/* M-Pesa STK Push Overlay */}
-          <AnimatePresence>
-            {showMpesaModal && (
-              <MpesaOverlay
-                details={mpesaDetails}
-                onClose={() => setShowMpesaModal(false)}
-              />
-            )}
-          </AnimatePresence>
+          {showMpesaModal && <MpesaOverlay details={mpesaDetails} onClose={() => setShowMpesaModal(false)} />}
         </PhoneFrame>
       </div>
     </div>

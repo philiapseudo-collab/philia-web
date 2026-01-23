@@ -44,3 +44,26 @@ body {
 img {
   content-visibility: auto;
 }
+
+/* Lightweight animations (replacing framer-motion ~100KB) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
